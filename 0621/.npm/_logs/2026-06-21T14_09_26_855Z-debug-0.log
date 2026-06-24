@@ -1,0 +1,42 @@
+0 verbose cli /usr/local/bin/node /usr/local/lib/node_modules/npm/bin/npm-cli.js
+1 info using npm@10.9.3
+2 info using node@v22.20.0
+3 silly config load:file:/usr/local/lib/node_modules/npm/npmrc
+4 silly config load:file:/Users/buyeonkwon/Desktop/test_0621/0621/.npmrc
+5 silly config load:file:/usr/local/etc/npmrc
+6 verbose title npm exec create-next-app@latest ./ --use-yarn --js --no-tailwind --no-app --no-src-dir --eslint --yes
+7 verbose argv "exec" "--yes" "--" "create-next-app@latest" "./" "--use-yarn" "--js" "--no-tailwind" "--no-app" "--no-src-dir" "--eslint" "--yes"
+8 verbose logfile logs-max:10 dir:/Users/buyeonkwon/Desktop/test_0621/0621/.npm/_logs/2026-06-21T14_09_26_855Z-
+9 verbose logfile /Users/buyeonkwon/Desktop/test_0621/0621/.npm/_logs/2026-06-21T14_09_26_855Z-debug-0.log
+10 silly logfile done cleaning log files
+11 silly packumentCache heap:4345298944 maxSize:1086324736 maxEntrySize:543162368
+12 http fetch GET https://registry.npmjs.org/npm attempt 1 failed with ENOTFOUND
+13 http fetch GET https://registry.npmjs.org/create-next-app attempt 1 failed with ENOTFOUND
+14 http fetch GET https://registry.npmjs.org/npm attempt 2 failed with ENOTFOUND
+15 http fetch GET https://registry.npmjs.org/create-next-app attempt 2 failed with ENOTFOUND
+16 http fetch GET https://registry.npmjs.org/npm attempt 3 failed with ENOTFOUND
+17 http fetch GET https://registry.npmjs.org/create-next-app attempt 3 failed with ENOTFOUND
+18 verbose type system
+19 verbose stack FetchError: request to https://registry.npmjs.org/create-next-app failed, reason: getaddrinfo ENOTFOUND registry.npmjs.org
+19 verbose stack     at ClientRequest.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/minipass-fetch/lib/index.js:130:14)
+19 verbose stack     at ClientRequest.emit (node:events:519:28)
+19 verbose stack     at emitErrorEvent (node:_http_client:105:11)
+19 verbose stack     at _destroy (node:_http_client:898:9)
+19 verbose stack     at onSocketNT (node:_http_client:918:5)
+19 verbose stack     at process.processTicksAndRejections (node:internal/process/task_queues:91:21)
+20 error code ENOTFOUND
+21 error syscall getaddrinfo
+22 error errno ENOTFOUND
+23 error network request to https://registry.npmjs.org/create-next-app failed, reason: getaddrinfo ENOTFOUND registry.npmjs.org
+24 error network This is a problem related to network connectivity.
+24 error network In most cases you are behind a proxy or have bad network settings.
+24 error network
+24 error network If you are behind a proxy, please make sure that the
+24 error network 'proxy' config is set properly.  See: 'npm help config'
+25 verbose cwd /Users/buyeonkwon/Desktop/test_0621/0621
+26 verbose os Darwin 24.3.0
+27 verbose node v22.20.0
+28 verbose npm  v10.9.3
+29 verbose exit 1
+30 verbose code 1
+31 error A complete log of this run can be found in: /Users/buyeonkwon/Desktop/test_0621/0621/.npm/_logs/2026-06-21T14_09_26_855Z-debug-0.log
