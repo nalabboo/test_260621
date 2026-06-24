@@ -7,13 +7,11 @@ export default function HomeComponent() {
   
   // 배경음악(BGM) 상태 관리
   const [bgm, setBgm] = useState<HTMLAudioElement | null>(null);
-  
-  // 무한 스크롤을 위해 맵 제한을 해제합니다. 카메라는 항상 캐릭터를 중앙에 포커스합니다.
-  const MAX_WORLD_X = 9999999;
 
   // 게임 좌표계 상태
   const [charWorldX, setCharWorldX] = useState(0); // 캐릭터의 실제 월드(맵) 좌표
   const [cameraX, setCameraX] = useState(0);       // 카메라가 비추는 맵의 위치
+  const [charScaleX, setCharScaleX] = useState(1); // 1: 오른쪽(원본), -1: 왼쪽(반전)
   
   // 걷기 애니메이션 상태
   const [isMoving, setIsMoving] = useState(false);
@@ -124,8 +122,12 @@ export default function HomeComponent() {
     const clickScreenX = e.clientX - window.innerWidth / 2;
     let targetWorldX = charWorldXRef.current + clickScreenX;
 
-    // 맵 끝을 넘어가지 않도록 캐릭터 이동 제한
-    targetWorldX = Math.max(0, Math.min(MAX_WORLD_X, targetWorldX));
+    // 클릭한 방향에 따라 캐릭터 좌우 반전 처리
+    if (targetWorldX < targetWorldXRef.current) {
+      setCharScaleX(-1); // 왼쪽으로 이동할 땐 이미지를 뒤집음
+    } else if (targetWorldX > targetWorldXRef.current) {
+      setCharScaleX(1); // 오른쪽으로 이동할 땐 원본 방향 유지
+    }
 
     // 목표 좌표만 업데이트해주면 rAF 루프가 부드럽게 알아서 끌고 감
     targetWorldXRef.current = targetWorldX;
@@ -173,23 +175,31 @@ export default function HomeComponent() {
                 transform: layer.isChar ? `translate3d(${charWorldX}px, 0px, 0px)` : 'none'
               }}
             >
+              {/* 좌우 반전 래퍼 */}
               <div
-                className={`absolute inset-0 ${bgSizeClass} ${bgPosClass} ${bgRepeatClass} w-full h-full ease-out will-change-transform`}
-                style={{ 
-                  backgroundImage: `url('${layer.src}')`, 
-                  backgroundSize: layer.isChar ? "auto 35%" : undefined,
-                  // 배경은 rAF 루프에 의해 매 프레임 업데이트되므로 CSS transition을 제외하여 뚝뚝 끊기지 않게 함
-                  backgroundPosition: layer.isChar 
-                    ? "center 70%" 
-                    : `calc(0% - ${cameraX * scrollRate}px) center`,
-                  // 마우스 패럴랙스 효과(transform)만 CSS transition으로 부드럽게 처리
-                  transform: `translate3d(${moveX}px, calc(${moveY}px + ${extraTranslateY}), 0) scale(1.1)`,
-                  transition: "transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-                  filter: layer.isChar 
-                    ? `drop-shadow(0px 12px 12px rgba(0,0,0,0.4))` 
-                    : (blurAmount > 0 ? `blur(${blurAmount}px)` : 'none')
+                className="absolute inset-0 w-full h-full"
+                style={{
+                  transform: layer.isChar ? `scaleX(${charScaleX})` : 'none',
                 }}
-              />
+              >
+                <div
+                  className={`absolute inset-0 ${bgSizeClass} ${bgPosClass} ${bgRepeatClass} w-full h-full ease-out will-change-transform`}
+                  style={{ 
+                    backgroundImage: `url('${layer.src}')`, 
+                    backgroundSize: layer.isChar ? "auto 35%" : undefined,
+                    // 배경은 rAF 루프에 의해 매 프레임 업데이트되므로 CSS transition을 제외하여 뚝뚝 끊기지 않게 함
+                    backgroundPosition: layer.isChar 
+                      ? "center 70%" 
+                      : `calc(0% - ${cameraX * scrollRate}px) center`,
+                    // 마우스 패럴랙스 효과(transform)만 CSS transition으로 부드럽게 처리
+                    transform: `translate3d(${moveX}px, calc(${moveY}px + ${extraTranslateY}), 0) scale(1.1)`,
+                    transition: "transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                    filter: layer.isChar 
+                      ? `drop-shadow(0px 12px 12px rgba(0,0,0,0.4))` 
+                      : (blurAmount > 0 ? `blur(${blurAmount}px)` : 'none')
+                  }}
+                />
+              </div>
             </div>
           </div>
         );
